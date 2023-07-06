@@ -113,18 +113,3 @@ To remove this trojan from your system, follow [this](https://github.com/Blank-c
 
 Join my [Telegram group](https://t.me/+h0jwMBN5Lfc2ZTdl).
 
-## Support the Project
-
-If you find this project useful and would like to show your support, you can make a donation using the following cryptocurrencies:
-
-- **Bitcoin (BTC):**
-  - Wallet Address: bc1quyf7d2cwrd0rgtyhtjt7ermxlw4hzg8npr4yce
-
-- **Ethereum (ETH):**
-  - Wallet Address: 0x54Ab5743141c781178863e3F658d48Cb9564f520
-
-- **USDT (Tron network):**
-  - Wallet Address: TJsixSZ9LDpn3ZNF8pEKmfNaNkMTrK1hWJ
-
-Your contributions will help support ongoing development, maintenance, and improvement of this project. Thank you for your generosity!
-
